@@ -17,10 +17,10 @@ const routes = [
       {path:'',element:<LandingPage />},
       {path:'/onboarding',element:<Onboarding />},
     ]
-  },
+  }, 
   {
     path: '/',
-    element: <AuthContextProvider><Layout/></AuthContextProvider>,
+    element: <Layout/>,
     children: [
       {path: 'Dashboard/',element:<Home/>},
       {path:'/Profile',element:<Profile />},
