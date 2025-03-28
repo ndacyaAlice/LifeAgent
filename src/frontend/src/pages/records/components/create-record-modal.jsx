@@ -17,11 +17,11 @@ const CreateRecordModal = ({ isOpen, onClose, onCreate }) => {
       onAction={handleCreate}
       actionLabel="Create Folder"
     >
-      <div className="grid gap-y-4">
+      <div className="grid gap-y-4 bg-[#1c1c24] ">
         <div>
           <label
             htmlFor="folder-name"
-            className="mb-2 block text-sm dark:text-white"
+            className="mb-2 block text-sm text-gray-300  dark:text-white"
           >
             Record Name
           </label>

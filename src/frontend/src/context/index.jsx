@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             var authenticated = window.auth.isAuthenticated;
-            if (!authenticated) {
+            if (authenticated) {
                 navigate('/');
                 return;
             }else{

@@ -69,3 +69,111 @@ AZLE_AUTORELOAD=true dfx deploy
 
 your application will be available at `http://localhost:8000?canisterId={asset_canister_id}`.
 ` http://{canisterId}.localhost:8000/`
+
+
+--------------------------------------------Check for this code -------------------------------------------------
+
+
+
+import {
+    $query,
+    $update,
+    Record,
+    StableBTreeMap,
+    Vec,
+    nat64,
+    text,
+    Opt,
+    ic,
+    Result,
+    Err,
+    Ok
+} from 'azle';
+
+// Define a Photo record type
+type Photo = Record<{
+    id: string;
+    name: text;
+    description: text;
+    base64Data: text;
+    mimeType: text;
+    size: nat64;
+    createdAt: nat64;
+}>;
+
+// Error type
+type PhotoError = Record<{
+    message: text;
+}>;
+
+// Storage for photos
+const photoStorage = new StableBTreeMap<string, Photo>(0, 44, 1024);
+
+$update;
+export function uploadPhoto(
+    name: text,
+    description: text,
+    base64Data: text
+): Result<Photo, PhotoError> {
+    // Validate inputs
+    if (!name || name.length === 0) {
+        return Err({ message: 'Name cannot be empty' });
+    }
+
+    if (!base64Data.startsWith('data:image/')) {
+        return Err({ message: 'Invalid image format. Expected base64 encoded image data.' });
+    }
+
+    // Extract MIME type from base64 data
+    const mimeTypeMatch = base64Data.match(/^data:(image\/\w+);base64,/);
+    if (!mimeTypeMatch) {
+        return Err({ message: 'Invalid base64 image format' });
+    }
+
+    const mimeType = mimeTypeMatch[1];
+    const pureBase64 = base64Data.split(',')[1];
+    const size = BigInt(Math.floor(pureBase64.length * 0.75)); // Approximate size in bytes
+
+    // Create photo record
+    const photo: Photo = {
+        id: generateId(),
+        name,
+        description,
+        base64Data,
+        mimeType,
+        size,
+        createdAt: ic.time()
+    };
+
+    // Store the photo
+    photoStorage.insert(photo.id, photo);
+    return Ok(photo);
+}
+
+// Helper function to generate unique ID
+function generateId(): string {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+$query;
+export function getPhoto(id: string): Result<Opt<Photo>, PhotoError> {
+    if (!id) {
+        return Err({ message: 'ID cannot be empty' });
+    }
+    return Ok(photoStorage.get(id));
+}
+
+$query;
+export function getAllPhotos(): Vec<Photo> {
+    return photoStorage.values();
+}
+
+$update;
+export function deletePhoto(id: string): Result<boolean, PhotoError> {
+    if (!photoStorage.containsKey(id)) {
+        return Err({ message: 'Photo not found' });
+    }
+
+    photoStorage.remove(id);
+    return Ok(true);
+}

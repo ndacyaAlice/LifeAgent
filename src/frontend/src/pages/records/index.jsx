@@ -9,9 +9,7 @@ const Index = () => {
   const [userRecords, setUserRecords] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   
-
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
