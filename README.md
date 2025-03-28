@@ -45,8 +45,8 @@ If you want to test your project locally, you can use the following commands:
 Cloning repo:
 
 ```bash
-git clone https://github.com/Rherve250/GovTransChain.git
-cd GovTransChain
+git clone https://github.com/ndacyaAlice/LifeAgent.git
+cd LifeAgent
 ```
 
 
