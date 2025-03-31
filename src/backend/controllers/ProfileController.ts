@@ -10,34 +10,31 @@ class ProfileController {
     static createProfile = (payload:ProfilePayload)=>{
         try{
          const {
-              FirstName,
-              SecondName,
+              Username,
               Gender,
               Age,
               Weight,
               Height,
-              Email,
          } = payload;
 
-         if(!FirstName || SecondName || Gender || Age ||   Weight || Height || Email){
+         if(!Username || !Gender || !Age ||   !Weight || !Height ){
             return Err({ InvalidPayload: "Missing required fields" }); 
         }
-        if (userTaken(Email)) {
+        if (userTaken(Username)) {
             return Err({ Error: "User already exists!!!" });
         } 
 
-            const NewProfile = {
-                FirstName,
-                SecondName,
+            const NewProfile:Profile = {
+                Username,
                 Gender,
                 Age,
                 Weight,
                 Height,
-                Email,
                 Owner: ic.caller(),
                 CreatedAt: getCurrentDate(),
                 UpdatedAt: getCurrentDate()
             }
+            console.log(NewProfile)
             ProfileStorage.insert(ic.caller(),NewProfile)
 
           return Ok("Profile created!!!")    

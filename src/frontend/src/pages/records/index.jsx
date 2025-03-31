@@ -3,13 +3,27 @@ import { IconCirclePlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import CreateRecordModal from "./components/create-record-modal"; // Adjust the import path
 import RecordCard from "./components/record-card"; // Adjust the import path
+import { useDispatch,useSelector } from "react-redux";
+import { CreateRecordThunk } from "../../Redux/action/createRecord";
+import { getRecordsThunk } from "../../Redux/action/getRecords";
 
 const Index = () => {
   const navigate = useNavigate();
   const [userRecords, setUserRecords] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => { 
+    const fetchRecords = async () => {
+      try {
+        await dispatch(getRecordsThunk());
+      } catch (error) {
+        console.error("Error fetching records:", error);
+      }
+    };
 
-  
+    fetchRecords();
+  }
+  , [dispatch]);
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -17,34 +31,29 @@ const Index = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-
+  const { load ,Record,error } = useSelector((state) => state.CreateRecord);
   const createFolder = async (foldername) => {
+    const data = {
+      RecordName: foldername,
+    };
     try {
-      if (currentUser) {
-        const newRecord = await createRecord({
-          userId: currentUser.id,
-          recordName: foldername,
-          analysisResult: "",
-          kanbanRecords: "",
-          createdBy: user.email.address,
-        });
-
-        if (newRecord) {
-          fetchUserRecords(user.email.address);
-          handleCloseModal();
-        }
-      }
+       dispatch(CreateRecordThunk(data));
+       if(Record == "Record created!!!"){
+        dispatch(getRecordsThunk());
+        handleCloseModal();
+       }
     } catch (e) {
       console.log(e);
       handleCloseModal();
     }
   };
+  const  { loads,Records,errors} = useSelector((state) => state.GetRecords); 
 
-  const handleNavigate = (name) => {
-    const filteredRecords = userRecords.filter(
-      (record) => record.recordName === name,
+  const handleNavigate = (recordId) => {
+    const filteredRecords = Records?.filter(
+      (record) => record.RecordId === recordId,
     );
-    navigate(`/medical-records/${name}`, {
+    navigate(`/medical-records/${recordId}`, {
       state: filteredRecords[0],
     });
   };
@@ -67,7 +76,7 @@ const Index = () => {
       />
 
       <div className="grid w-full gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-        {userRecords?.map((record) => (
+        {Records?.map((record) => (
           <RecordCard
             key={record.recordName}
             record={record}

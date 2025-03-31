@@ -38,7 +38,7 @@ export const login=async()=>{
         onSuccess: async()=>{
            window.auth.isAuthenticated = await authClient.isAuthenticated();
            await  window.location.reload();
-            window.location.href = '/Profile';
+            window.location.href = '/Dashboard';
            
         },
     });

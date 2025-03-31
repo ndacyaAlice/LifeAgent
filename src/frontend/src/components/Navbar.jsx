@@ -4,6 +4,7 @@ import { CustomButton } from ".";
 import { menu, search } from "../assets";
 import { navlinks } from "../constants";
 import { IconHeartHandshake } from "@tabler/icons-react";
+import { logout } from "../utils/auth";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -23,9 +24,9 @@ const Navbar = () => {
   }, []);
 
 
- const authenticated = false;
+ const authenticated = window.auth.isAuthenticated;
   const handleLoginLogout = useCallback(() => {
-   
+   logout()
   }, []);
 
   return (

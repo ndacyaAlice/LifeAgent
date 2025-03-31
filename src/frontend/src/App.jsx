@@ -15,14 +15,14 @@ const routes = [
     element: <FrontLayout/>,
     children:[
       {path:'',element:<LandingPage />},
-      {path:'/onboarding',element:<Onboarding />},
     ]
   }, 
   {
     path: '/',
-    element: <Layout/>,
+    element: <AuthContextProvider><Layout/></AuthContextProvider>,
     children: [
       {path: 'Dashboard/',element:<Home/>},
+      {path:'/onboarding',element:<Onboarding />},
       {path:'/Profile',element:<Profile />},
       {path:'/medical-records',element:<MedicalRecords />},
       {path:'/medical-records/:id',element:<SingleRecordDetails />},

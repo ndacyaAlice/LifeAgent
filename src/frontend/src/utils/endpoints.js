@@ -5,6 +5,7 @@
  */
 // Profile endpoint
 const createProfile=async(Profile)=>{ 
+  console.log("Profile", Profile)
   return  await window.canister.LifeAgentApi.createProfile(Profile)
 }
 const getProfile=async()=>{ 

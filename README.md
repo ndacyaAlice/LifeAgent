@@ -71,7 +71,7 @@ your application will be available at `http://localhost:8000?canisterId={asset_c
 ` http://{canisterId}.localhost:8000/`
 
 
---------------------------------------------Check for this code -------------------------------------------------
+
 
 
 
@@ -177,3 +177,4 @@ export function deletePhoto(id: string): Result<boolean, PhotoError> {
     photoStorage.remove(id);
     return Ok(true);
 }
+

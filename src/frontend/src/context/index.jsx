@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import { getProfile } from "../utils/endpoints";
 
 
 const AuthContext = createContext();
@@ -13,7 +14,7 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             var authenticated = window.auth.isAuthenticated;
-            if (authenticated) {
+            if (!authenticated) {
                 navigate('/');
                 return;
             }else{
@@ -21,8 +22,6 @@ export const AuthContextProvider = ({ children }) => {
                 if(profile.Err?.NotFound){
                     setHasProfile(false)
                 }else if(profile.Ok){
-                    const { Fullname} =profile.Ok
-                      setName(Fullname)
                       setHasProfile(true)
                 }
             }
@@ -40,7 +39,7 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ hasProfile, name, Role }}>
+        <AuthContext.Provider value={{ hasProfile }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,41 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { CreateRecordThunk } from "../action/createRecord";
 
 
 const initialState = {
     load: false,
-    profile: null,
+    Record: null,
     error: null,
 }
 
-const CreateProfileSlice= createSlice({
-    name: "Profile",
+const CreateRecordSlice= createSlice({
+    name: "createRecord",
     initialState,
     reducers: {
 
     },
 
     extraReducers: {
-      [CreateProfileThunk.pending] : (state) =>{
+      [CreateRecordThunk.pending] : (state) =>{
         return{
             ...state,
             load: true
         }
       },
-      [CreateProfileThunk.rejected]:(state,{payload}) =>{
+      [CreateRecordThunk.rejected]:(state,{payload}) =>{
         return {
             ...state,
             load:false,
             error:payload
         }
       },
-      [CreateProfileThunk.fulfilled]: (state,{payload}) => {
+      [CreateRecordThunk.fulfilled]: (state,{payload}) => {
         return {
             ...state,
             load: false,
-            profile: payload
+            Record: payload
         }
       }  
     }
 })
 
-export default CreateProfileSlice.reducer
+export default  CreateRecordSlice.reducer

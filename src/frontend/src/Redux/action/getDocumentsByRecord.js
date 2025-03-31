@@ -1,16 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ToastError, ToastSuccess } from "../../utils/toast";
-import  { createProfile } from "../../utils/endpoints"
+import { getDocumentsByRecord } from "../../utils/endpoints";
 
-export const CreateProfileThunk = createAsyncThunk("CreateProfile",
+export const getDocumentsThunk = createAsyncThunk("getDocuments",
 async(data,{rejectWithValue})=>{
     try{
-       const repo = await createProfile(data);
+        const { RecordId } = data
+       const repo = await getDocumentsByRecord(RecordId);
        if(repo.Ok){
-        ToastSuccess("Create successfully")
-        setTimeout(()=>{
-            window.location.href="/Dashboard"
-        }, 5000)
         return repo.Ok
        }else if(repo.Err){
         {repo.Err.Error && ToastError(repo.Err.Error)}
