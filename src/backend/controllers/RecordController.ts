@@ -46,7 +46,7 @@ class RecordController {
             if(RecordOpt.length === 0){
                 return Err({ NotFound: "No Record found" }); 
             }
-            const recordPerUser = RecordOpt.filter((record)=>(record.RecordOwer === ic.caller()));
+            const recordPerUser = RecordOpt.filter((record)=>(JSON.stringify(record.RecordOwer) === JSON.stringify(ic.caller())));
             return Ok(recordPerUser)
         }catch(error: any){
             console.log(error);

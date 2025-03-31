@@ -3,13 +3,11 @@ import { Record, text, Variant , Vec, Principal, nat32 } from "azle/experimental
 // __________Profile DataType__________
 
 export const Profile = Record({
-    FirstName: text,
-    SecondName: text,
+    Username:text,
     Gender: text,
     Age: text,
     Weight: text,
     Height:text,
-    Email: text,
     Owner: Principal,
     CreatedAt: text,
     UpdatedAt: text
@@ -19,13 +17,11 @@ export const Profile = Record({
 export type Profile = typeof Profile.tsType
 
 export const ProfilePayload = Record({
-    FirstName: text,
-    SecondName: text,
+    Username:text,
     Gender: text,
     Age: text,
     Weight: text,
-    Height:text,
-    Email: text
+    Height:text
 })
 
 export type ProfilePayload = typeof ProfilePayload.tsType

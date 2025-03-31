@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   IconChevronRight,
   IconFileUpload,
   IconProgress,
 } from "@tabler/icons-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import FileUploadModal from "./components/file-upload-modal";
 import RecordDetailsHeader from "./components/record-details-header";
-
+import { getDocumentsThunk } from "../../Redux/action/getDocumentsByRecord";
+import { AnalyzeDoc , processTreatmentPlan1}from "../../utils/AIUtils";
 
 function SingleRecordDetails() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -23,6 +27,17 @@ function SingleRecordDetails() {
   const [filename, setFilename] = useState("");
   const [filetype, setFileType] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(()=>{
+    const fetchData=()=>{
+      if(id){
+        const data={ RecordId:id }
+        dispatch(getDocumentsThunk(data))
+      }
+    }
+    fetchData();
+
+  },[dispatch,id])
 
 
 
@@ -51,7 +66,7 @@ function SingleRecordDetails() {
     });
   };
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = async() => {
     setUploading(true);
     setUploadSuccess(false);
     try {
@@ -64,7 +79,9 @@ function SingleRecordDetails() {
           },
         },
       ];
-      setAnalysisResult("description provide by ai");
+      const text = await AnalyzeDoc(imageParts);
+      console.log("Analysis result:", text);
+      setAnalysisResult(text);
 
       setUploadSuccess(true);
       setIsModalOpen(false);
@@ -81,20 +98,8 @@ function SingleRecordDetails() {
 
   const processTreatmentPlan = async () => {
     setIsProcessing(true);
-     const text = {
-      "columns": [
-        { "id": "todo", "title": "Todo" },
-        { "id": "doing", "title": "Work in progress" },
-        { "id": "done", "title": "Done" }
-      ],
-      "tasks": [
-        { "id": "1", "columnId": "todo", "content": "Example task 1" },
-        { "id": "2", "columnId": "todo", "content": "Example task 2" },
-        { "id": "3", "columnId": "doing", "content": "Example task 3" },
-        { "id": "4", "columnId": "doing", "content": "Example task 4" },
-        { "id": "5", "columnId": "done", "content": "Example task 5" }
-      ]
-    }
+    const parsedResponse =await processTreatmentPlan1(analysisResult);
+    console.log(parsedResponse)
     navigate("/screening-schedules", { state: parsedResponse });
     setIsProcessing(false);
   };
@@ -137,7 +142,7 @@ function SingleRecordDetails() {
                     <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
                       Analysis Result
                     </h2>
-                    <div className="space-y-2">
+                    <div className="space-y-2 text-black">
                       <ReactMarkdown>{analysisResult}</ReactMarkdown>
                     </div>
                   </div>
