@@ -33,7 +33,7 @@ const getProfileSlice= createSlice({
         return {
             ...state,
             loadz: false,
-            Records: payload
+            getProfile: payload
         }
       }  
     }

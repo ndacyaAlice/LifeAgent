@@ -75,17 +75,8 @@ class RecordController {
                 return Err({ Error: "Document already exists" });
             }
     
-            // Validate Base64 image format
-            if (!DocFile.startsWith("data:image/")) {
-                return Err({ message: "Invalid image format. Must be a Base64-encoded image." });
-            }
     
-            // Extract MIME type and validate Base64 structure
-            const mimeTypeMatch = DocFile.match(/^data:(image\/\w+);base64,/);
-            if (!mimeTypeMatch) {
-                return Err({ message: "Invalid image format. Base64 structure is incorrect." });
-            }
-    
+           
     
             // Create the document object adhering to the `Document` data type
             const newDocument = {

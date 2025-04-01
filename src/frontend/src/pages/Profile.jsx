@@ -26,7 +26,7 @@ console.log(getProfile)
           <div className="flex h-screen items-center justify-center">
           <div className="text-lg text-gray-500">Loading...</div>
         </div>
-        ): getProfile?.length === 0 || errorz ?(
+        ): !getProfile  || errorz ?(
           <div style={{textAlign: "center"}}>
           <p>No Profile or there is error! Reload</p>
     </div>

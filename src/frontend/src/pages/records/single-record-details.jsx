@@ -11,6 +11,7 @@ import FileUploadModal from "./components/file-upload-modal";
 import RecordDetailsHeader from "./components/record-details-header";
 import { getDocumentsThunk } from "../../Redux/action/getDocumentsByRecord";
 import { AnalyzeDoc , processTreatmentPlan1}from "../../utils/AIUtils";
+import { CreateDocThunk } from "../../Redux/action/createDoc";
 
 function SingleRecordDetails() {
   const { state } = useLocation();
@@ -83,6 +84,15 @@ function SingleRecordDetails() {
       console.log("Analysis result:", text);
       setAnalysisResult(text);
 
+      const NewDoc = {
+        DocName:filename, 
+        DocFile: imageParts[0].inlineData, 
+        DocDescription : text, 
+        RecordId: id
+      }
+      
+      dispatch(CreateDocThunk(NewDoc))
+
       setUploadSuccess(true);
       setIsModalOpen(false);
       setFilename("");
@@ -112,7 +122,7 @@ function SingleRecordDetails() {
         className="mt-6 inline-flex items-center gap-x-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-[#13131a] dark:text-white dark:hover:bg-neutral-800"
       >
         <IconFileUpload />
-        Upload Reports
+        Upload Document
       </button>
       <FileUploadModal
         isOpen={isModalOpen}

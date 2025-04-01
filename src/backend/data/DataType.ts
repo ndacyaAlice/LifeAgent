@@ -31,7 +31,11 @@ export type ProfilePayload = typeof ProfilePayload.tsType
 
 export const DocumentPayload =  Record({
     DocName: text,
-    DocFile: text,
+    DocFile: Record({
+        data: text,
+        mimeType: text,
+    }),
+
     RecordId: text,
     DocDescription: text,
 })
@@ -41,7 +45,10 @@ export type DocumentPayload  = typeof DocumentPayload.tsType
 export const  Document =Record({
     DocumentId: text,
     DocName: text,
-    DocFile: text,
+    DocFile: Record({
+        data: text,
+        mimeType: text,
+    }),
     DocDescription: text,
     CreatedAt: text,
     UpdatedAt: text
