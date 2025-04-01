@@ -49,7 +49,10 @@ git clone https://github.com/ndacyaAlice/LifeAgent.git
 cd LifeAgent
 ```
 
-
+### GET GEMINI_API_KEY
+```
+ Then paste it in file src/frontend/src/utils/AIUtils.js
+```
 ### to install and deploy Step by Step Follow below commands:
 
 ```bash
