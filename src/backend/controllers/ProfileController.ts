@@ -50,6 +50,7 @@ class ProfileController {
              return Err({NotFound:"Profile does not exist"})
             }
  
+            console.log(ProfileOpt)
          return Ok(ProfileOpt)
         }catch(error: any) {
             return Err({ Error: `Error occurred: ${error.message}` }); 

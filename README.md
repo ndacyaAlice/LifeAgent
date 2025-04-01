@@ -13,16 +13,16 @@ This AI-driven agent enables secure authentication via Internet Computer Protoco
 
 ### Prerequisites
 
-requirements: Please install these versions or high
+requirements: Please install these versions
 
 - **dfx**: You have installed the latest version of the DFINITY Canister SDK, `dfx`. You can download it from the DFINITY SDK page. [installation guide](https://demergent-labs.github.io/azle/get_started.html#installation)
 
  ```
-  use version dfx 0.22.0
+  use version dfx 0.24.3
  ```
 - **Node.js**: You have installed Node.js, version 18 or above.
 ```
- v20.12.2
+ v22.13.1
 
 ```
 - Azle version use 
@@ -33,7 +33,7 @@ requirements: Please install these versions or high
  - podman verion use
 
  ```
-  podman version 3.4.4
+  podman version 4.9.3
   
  ```
 Please ensure all these prerequisites are met before proceeding with the setup of the project.
@@ -64,7 +64,7 @@ dfx start --host 127.0.0.1:8000 --clean --background
 dfx deploy
 or
 
-AZLE_AUTORELOAD=true dfx deploy
+AZLE_AUTORELOAD=true dfx deploy or dfx deploy
 ```
 
 your application will be available at `http://localhost:8000?canisterId={asset_canister_id}`.
@@ -75,106 +75,4 @@ your application will be available at `http://localhost:8000?canisterId={asset_c
 
 
 
-import {
-    $query,
-    $update,
-    Record,
-    StableBTreeMap,
-    Vec,
-    nat64,
-    text,
-    Opt,
-    ic,
-    Result,
-    Err,
-    Ok
-} from 'azle';
-
-// Define a Photo record type
-type Photo = Record<{
-    id: string;
-    name: text;
-    description: text;
-    base64Data: text;
-    mimeType: text;
-    size: nat64;
-    createdAt: nat64;
-}>;
-
-// Error type
-type PhotoError = Record<{
-    message: text;
-}>;
-
-// Storage for photos
-const photoStorage = new StableBTreeMap<string, Photo>(0, 44, 1024);
-
-$update;
-export function uploadPhoto(
-    name: text,
-    description: text,
-    base64Data: text
-): Result<Photo, PhotoError> {
-    // Validate inputs
-    if (!name || name.length === 0) {
-        return Err({ message: 'Name cannot be empty' });
-    }
-
-    if (!base64Data.startsWith('data:image/')) {
-        return Err({ message: 'Invalid image format. Expected base64 encoded image data.' });
-    }
-
-    // Extract MIME type from base64 data
-    const mimeTypeMatch = base64Data.match(/^data:(image\/\w+);base64,/);
-    if (!mimeTypeMatch) {
-        return Err({ message: 'Invalid base64 image format' });
-    }
-
-    const mimeType = mimeTypeMatch[1];
-    const pureBase64 = base64Data.split(',')[1];
-    const size = BigInt(Math.floor(pureBase64.length * 0.75)); // Approximate size in bytes
-
-    // Create photo record
-    const photo: Photo = {
-        id: generateId(),
-        name,
-        description,
-        base64Data,
-        mimeType,
-        size,
-        createdAt: ic.time()
-    };
-
-    // Store the photo
-    photoStorage.insert(photo.id, photo);
-    return Ok(photo);
-}
-
-// Helper function to generate unique ID
-function generateId(): string {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
-}
-
-$query;
-export function getPhoto(id: string): Result<Opt<Photo>, PhotoError> {
-    if (!id) {
-        return Err({ message: 'ID cannot be empty' });
-    }
-    return Ok(photoStorage.get(id));
-}
-
-$query;
-export function getAllPhotos(): Vec<Photo> {
-    return photoStorage.values();
-}
-
-$update;
-export function deletePhoto(id: string): Result<boolean, PhotoError> {
-    if (!photoStorage.containsKey(id)) {
-        return Err({ message: 'Photo not found' });
-    }
-
-    photoStorage.remove(id);
-    return Ok(true);
-}
-
+  

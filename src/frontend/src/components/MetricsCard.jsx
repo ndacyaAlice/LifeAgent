@@ -9,14 +9,14 @@ const MetricsCard = ({
   progress,
   onClick,
 }) => (
-  <div className="flex flex-col rounded-xl border bg-white shadow-sm dark:border-neutral-800 dark:bg-[#13131a]">
+  <div className="flex flex-col rounded-xl border bg-[#1c1c24] shadow-sm dark:border-neutral-800 dark:bg-[#13131a]">
     <div className="flex justify-between gap-x-3 p-4 md:p-5">
       <div>
-        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500">
+        <p className="text-xs uppercase tracking-wide text-gray-100 dark:text-neutral-500">
           {title}
         </p>
         <div className="mt-1 flex items-center gap-x-2">
-          <h3 className="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200">
+          <h3 className="text-xl font-medium text-gray-100 sm:text-2xl dark:text-neutral-200">
             {value}
           </h3>
         </div>

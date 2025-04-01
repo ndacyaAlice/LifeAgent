@@ -23,8 +23,6 @@ const Navbar = () => {
     }
   }, []);
 
-
- const authenticated = window.auth.isAuthenticated;
   const handleLoginLogout = useCallback(() => {
    logout()
   }, []);
@@ -47,12 +45,13 @@ const Navbar = () => {
       </div>
 
       <div className="hidden flex-row justify-end gap-2 sm:flex">
+        {window.auth.isAuthenticated &&   
         <CustomButton
           btnType="button"
-          title={authenticated ? "Log Out" : "Log In"}
-          styles={authenticated ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
+          title="Log Out"
+          styles={window.auth.isAuthenticated ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
           handleClick={handleLoginLogout}
-        />
+        />}
       </div>
 
       <div className="relative flex items-center justify-between sm:hidden">
