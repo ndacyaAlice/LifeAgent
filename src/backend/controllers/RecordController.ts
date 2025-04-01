@@ -55,15 +55,15 @@ class RecordController {
     }
     static createDocument = (payload: DocumentPayload) => {
         try {
-            const { DocName, DocFile, DocDescription, RecordId } = payload;
+            const { DocName, DocFile: { data, mimeType }, DocDescription, RecordId } = payload;
     
             // Validate required fields
-            if (!DocName || !DocFile || !DocDescription ||  RecordId) {
+            if (!DocName || !data || !mimeType || !DocDescription ||  !RecordId) {
                 return Err({ InvalidPayload: "Missing required fields" });
             }
     
             // Find the record to which the document belongs
-            const record = RecordStrorage.values().find((record) => (record.RecordOwer === ic.caller()) && (record.RecordId === RecordId));
+            const record = RecordStrorage.values().find((record) => (JSON.stringify(record.RecordOwer) === JSON.stringify(ic.caller())) && (record.RecordId === RecordId));
             if (!record) {
                 return Err({ NotFound: "No record found for the current user." });
             }
@@ -82,17 +82,15 @@ class RecordController {
             const newDocument = {
                 DocumentId: uuidv4(),        
                 DocName,              
-                DocFile,                     // Store the full Base64-encoded string
+                DocFile: { data, mimeType },                     // Store the full Base64-encoded string
                 DocDescription,              
                 CreatedAt: getCurrentDate(), 
                 UpdatedAt: getCurrentDate(), 
             };
-    
-            
             // Add the document to the record
             record.Documents.push(newDocument);
             RecordStrorage.insert(record.RecordId, record);
-    
+             console.log(newDocument)
             return Ok("Document created successfully!");
         } catch (error: any) {
             console.error(error);

@@ -34,7 +34,7 @@ class ProfileController {
                 CreatedAt: getCurrentDate(),
                 UpdatedAt: getCurrentDate()
             }
-            console.log(NewProfile)
+            
             ProfileStorage.insert(ic.caller(),NewProfile)
 
           return Ok("Profile created!!!")    
@@ -49,8 +49,6 @@ class ProfileController {
          if(!ProfileOpt){
              return Err({NotFound:"Profile does not exist"})
             }
- 
-            console.log(ProfileOpt)
          return Ok(ProfileOpt)
         }catch(error: any) {
             return Err({ Error: `Error occurred: ${error.message}` }); 

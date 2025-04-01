@@ -20,6 +20,9 @@ const getRecordPerUser=async()=>{
 }
 // Document endpoint
 const createDocument=async(Document)=>{ 
+  const v= await window.canister.LifeAgentApi.createDocument(Document)
+  console.log("Document", Document, v)
+
   return  await window.canister.LifeAgentApi.createDocument(Document)
 }
 const getDocumentsByRecord=async(RecordId)=>{ 

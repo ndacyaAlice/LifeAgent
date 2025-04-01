@@ -91,7 +91,7 @@ function SingleRecordDetails() {
         RecordId: id
       }
       
-      dispatch(CreateDocThunk(NewDoc))
+      await dispatch(CreateDocThunk(NewDoc))
 
       setUploadSuccess(true);
       setIsModalOpen(false);
