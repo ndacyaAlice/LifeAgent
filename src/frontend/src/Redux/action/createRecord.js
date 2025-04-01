@@ -8,9 +8,9 @@ async(data,{rejectWithValue})=>{
        const repo = await createRecord(data);
        if(repo.Ok){
         ToastSuccess("Create successfully")
-        // setTimeout(()=>{
-        //     window.location.reload()
-        // }, 5000)
+        setTimeout(()=>{
+            window.location.reload()
+        }, 3000)
         return repo.Ok
        }else if(repo.Err){
         {repo.Err.Error && ToastError(repo.Err.Error)}

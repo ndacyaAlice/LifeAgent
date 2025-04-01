@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ToastError, ToastSuccess } from "../../utils/toast";
-import { createDocument } from "../../utils/endpoints";
+import { Activity } from "../../utils/endpoints";
 
-export const CreateDocThunk = createAsyncThunk("CreateDoc",
+export const createActivityThunk = createAsyncThunk("createActivity",
 async(data,{rejectWithValue})=>{
     try{
-       const repo = await createDocument(data);
+       const repo = await  Activity(data);
        if(repo.Ok){
         ToastSuccess("Create successfully")
         return repo.Ok

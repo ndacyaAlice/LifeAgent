@@ -4,7 +4,8 @@ import getRecordsSlice from '../slice/getRecordsSlice';
 import getDocumentsSlice from '../slice/getDocumentsSlice';
 import CreateProfileSlice from '../slice/CreateProfileSlice';
 import getProfileSlice from '../slice/getProfileSlice'
-import CreateDocSlice from "../slice/CreateDocSlice"
+import CreateDocSlice from "../slice/CreateDocSlice";
+import createActivitySlice from '../slice/CreateActivitySlice';
 
 const store = configureStore({
 	reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
 
 		GetDocuments: getDocumentsSlice,
 		CreateDoc: CreateDocSlice, 
+		createActivity: createActivitySlice,
 		
 	},
 });

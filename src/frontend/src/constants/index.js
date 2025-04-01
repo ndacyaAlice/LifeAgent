@@ -4,7 +4,7 @@ export const navlinks = [
   {
     name: "dashboard",
     imgUrl: apps,
-    link: "/",
+    link: "/Dashboard",
   },
   {
     name: "records",

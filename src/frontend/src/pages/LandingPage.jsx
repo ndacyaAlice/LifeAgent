@@ -1,8 +1,13 @@
 import React from 'react';
 import { login } from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const direct = () => {
+    navigate('/Dashboard')
+  }
   return (
     <div className="w-[80%] mx-auto  bg-[#13131a]">
     <div className="flex text-white">
@@ -29,13 +34,20 @@ const LandingPage = () => {
          
           </div>
           <div className="mt-3 md:mt-20 flex flex-col items-center justify-center h-full">
-             <button
-                         type="submit"
-                         onClick={login}
-                         className="mt-4 w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                       >
-                        Get Started
-                       </button>
+             {window.auth.isAuthenticated ? (
+              <button
+              type="submit"
+              onClick={direct}
+              className="mt-4 w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            >
+             Dashboard</button> ):
+                <button
+                type="submit"
+                onClick={login}
+                className="mt-4 w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              >
+               Get Started</button>
+     }
           </div>
       </div>
     </div>
